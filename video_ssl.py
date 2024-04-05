@@ -117,7 +117,7 @@ def main():
     if args.dataset == "HMDB51":
         dataset_train = pytorchvideo.data.Hmdb51(
                     data_path="/path/to/HMDB51/split/testTrainMulti_7030_splits",
-                    video_path_prefix="/home/paul/University/Master-Thesis/datasets/HMDB51/videos",
+                    video_path_prefix="/path/to/HMDB51/videos",
                     clip_sampler=pytorchvideo.data.make_clip_sampler("random", clip_duration),
                     video_sampler=torch.utils.data.SequentialSampler,
                     transform=transform,
@@ -125,7 +125,7 @@ def main():
                 )
         dataset_test = pytorchvideo.data.Hmdb51(
                     data_path="/path/to/HMDB51/split/testTrainMulti_7030_splits",
-                    video_path_prefix="/home/paul/University/Master-Thesis/datasets/HMDB51/videos",
+                    video_path_prefix="/path/to/datasets/HMDB51/videos",
                     clip_sampler=pytorchvideo.data.make_clip_sampler("random", clip_duration),
                     video_sampler=torch.utils.data.SequentialSampler,
                     transform=transform,
@@ -134,7 +134,7 @@ def main():
                 )
         dataset_unused = pytorchvideo.data.Hmdb51(
                     data_path="/path/to/HMDB51/split/testTrainMulti_7030_splits",
-                    video_path_prefix="/home/paul/University/Master-Thesis/datasets/HMDB51/videos",
+                    video_path_prefix="/path/to/HMDB51/videos",
                     clip_sampler=pytorchvideo.data.make_clip_sampler("random", clip_duration),
                     video_sampler=torch.utils.data.SequentialSampler,
                     transform=transform,
