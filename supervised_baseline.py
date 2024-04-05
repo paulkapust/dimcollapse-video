@@ -8,6 +8,7 @@ from tqdm import tqdm
 
 parser = argparse.ArgumentParser(description='Compute features of pretrained supervised Slow 3D ResNet-50 model')
 parser.add_argument('--dataset', type=str, choices=["UCF101", "HMDB51", "Kinetics400"], help='dataset to compute features for')
+parser.add_argument('--dataset_path', type=str, required=True, help='path to chosen dataset')
 parser.add_argument('--output_path', type=str, default="./", help='path where to store saved features')
 parser.add_argument('--device', default='cuda', choices=['cuda', 'cpu'])
 
@@ -54,7 +55,7 @@ def main():
 
     if args.dataset == "UCF101": 
         dataset = pytorchvideo.data.Ucf101(
-                    data_path="/path/to/UCF101/videos",
+                    data_path=args.dataset_path,
                     clip_sampler=pytorchvideo.data.make_clip_sampler("random", clip_duration),
                     video_sampler=torch.utils.data.SequentialSampler,
                     transform=transform,
@@ -63,7 +64,7 @@ def main():
 
     if args.dataset == "Kinetics400": 
         dataset = pytorchvideo.data.Kinetics(
-                    data_path="/path/to/Kinetics400/videos/val",
+                    data_path=args.dataset_path,
                     clip_sampler=pytorchvideo.data.make_clip_sampler("random", clip_duration),
                     video_sampler=torch.utils.data.SequentialSampler,
                     transform=transform,
@@ -72,16 +73,16 @@ def main():
     
     if args.dataset == "HMDB51":
         dataset_train = pytorchvideo.data.Hmdb51(
-                    data_path="/path/to/HMDB51/split/testTrainMulti_7030_splits",
-                    video_path_prefix="/path/to/HMDB51/videos",
+                    data_path=args.dataset_path + "/split/testTrainMulti_7030_splits",
+                    video_path_prefix=args.dataset_path + "/videos",
                     clip_sampler=pytorchvideo.data.make_clip_sampler("random", clip_duration),
                     video_sampler=torch.utils.data.SequentialSampler,
                     transform=transform,
                     decode_audio=False
                 )
         dataset_test = pytorchvideo.data.Hmdb51(
-                    data_path="/path/to/HMDB51/split/testTrainMulti_7030_splits",
-                    video_path_prefix="/path/to/HMDB51/videos",
+                    data_path=args.dataset_path + "/split/testTrainMulti_7030_splits",
+                    video_path_prefix=args.dataset_path + "/videos",
                     clip_sampler=pytorchvideo.data.make_clip_sampler("random", clip_duration),
                     video_sampler=torch.utils.data.SequentialSampler,
                     transform=transform,
@@ -89,8 +90,8 @@ def main():
                     split_type="test"
                 )
         dataset_unused = pytorchvideo.data.Hmdb51(
-                    data_path="/path/to/HMDB51/split/testTrainMulti_7030_splits",
-                    video_path_prefix="/path/to/HMDB51/videos",
+                    data_path=args.dataset_path + "/split/testTrainMulti_7030_splits",
+                    video_path_prefix=args.dataset_path + "/videos",
                     clip_sampler=pytorchvideo.data.make_clip_sampler("random", clip_duration),
                     video_sampler=torch.utils.data.SequentialSampler,
                     transform=transform,

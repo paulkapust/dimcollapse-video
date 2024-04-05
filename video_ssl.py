@@ -14,13 +14,16 @@ from slowfast.config.defaults import assert_and_infer_cfg
 
 parser = argparse.ArgumentParser(description='Compute features of selected self-supervised method and stored model')
 parser.add_argument('--method', type=str, choices=["SimCLR", "MoCo", "SwAV", "BYOL"], help='list of method names')
+# Look up https://github.com/facebookresearch/SlowFast/tree/main/projects/contrastive_ssl
 parser.add_argument('--checkpoint', type=str, required=True, help='path to stored model')
+# Look up https://github.com/facebookresearch/SlowFast/tree/main/configs/contrastive_ssl
+parser.add_argument("--checkpoint_cfg", dest="cfg_files", required=True, nargs="+", help="path to config file of stored models") 
 parser.add_argument('--dataset', type=str, choices=["UCF101", "HMDB51", "Kinetics400"], help='dataset to compute features for')
+parser.add_argument('--dataset_path', type=str, required=True, help='path to chosen dataset')
 parser.add_argument('--output_path', type=str, default="./", help='path where to store saved features')
 parser.add_argument('--device', default='cuda', choices=['cuda', 'cpu'])
 
 # Based on slowfast/utils/parser.py arguments (Defaults used)
-parser.add_argument("--cfg", dest="cfg_files", required=True, nargs="+", help="Path to the config files of stored model")
 parser.add_argument("--shard_id", help="The shard id of current node, Starts from 0 to num_shards - 1", default=0, type=int)
 parser.add_argument("--num_shards", help="Number of shards using by the job", default=1, type=int)
 parser.add_argument("--init_method", help="Initialization method, includes TCP or shared file-system", default="tcp://localhost:9999", type=str)
@@ -40,7 +43,6 @@ def main():
     model = build_model(cfg)
     # Loading self-supervised pretrained model state dictionary
     model_dict = torch.load(args.checkpoint)
-    # For both look up https://github.com/facebookresearch/SlowFast/tree/main/projects/contrastive_ssl
 
     state_dict = model_dict['model_state']
     if args.method == "SimCLR" or args.method == "SwAV" or args.method == "MoCo":
@@ -98,7 +100,7 @@ def main():
 
     if args.dataset == "UCF101": 
         dataset = pytorchvideo.data.Ucf101(
-                    data_path="/path/to/UCF101/videos",
+                    data_path=args.dataset_path,
                     clip_sampler=pytorchvideo.data.make_clip_sampler("random", clip_duration),
                     video_sampler=torch.utils.data.SequentialSampler,
                     transform=transform,
@@ -107,7 +109,7 @@ def main():
 
     if args.dataset == "Kinetics400": 
         dataset = pytorchvideo.data.Kinetics(
-                    data_path="/path/to/Kinetics400/videos/val",
+                    data_path=args.dataset_path,
                     clip_sampler=pytorchvideo.data.make_clip_sampler("random", clip_duration),
                     video_sampler=torch.utils.data.SequentialSampler,
                     transform=transform,
@@ -116,16 +118,16 @@ def main():
     
     if args.dataset == "HMDB51":
         dataset_train = pytorchvideo.data.Hmdb51(
-                    data_path="/path/to/HMDB51/split/testTrainMulti_7030_splits",
-                    video_path_prefix="/path/to/HMDB51/videos",
+                    data_path=args.dataset_path + "/split/testTrainMulti_7030_splits",
+                    video_path_prefix=args.dataset_path + "/videos",
                     clip_sampler=pytorchvideo.data.make_clip_sampler("random", clip_duration),
                     video_sampler=torch.utils.data.SequentialSampler,
                     transform=transform,
                     decode_audio=False
                 )
         dataset_test = pytorchvideo.data.Hmdb51(
-                    data_path="/path/to/HMDB51/split/testTrainMulti_7030_splits",
-                    video_path_prefix="/path/to/datasets/HMDB51/videos",
+                    data_path=args.dataset_path + "/split/testTrainMulti_7030_splits",
+                    video_path_prefix=args.dataset_path + "/videos",
                     clip_sampler=pytorchvideo.data.make_clip_sampler("random", clip_duration),
                     video_sampler=torch.utils.data.SequentialSampler,
                     transform=transform,
@@ -133,8 +135,8 @@ def main():
                     split_type="test"
                 )
         dataset_unused = pytorchvideo.data.Hmdb51(
-                    data_path="/path/to/HMDB51/split/testTrainMulti_7030_splits",
-                    video_path_prefix="/path/to/HMDB51/videos",
+                    data_path=args.dataset_path + "/split/testTrainMulti_7030_splits",
+                    video_path_prefix=args.dataset_path + "/videos",
                     clip_sampler=pytorchvideo.data.make_clip_sampler("random", clip_duration),
                     video_sampler=torch.utils.data.SequentialSampler,
                     transform=transform,
