@@ -74,7 +74,7 @@ def main():
 
     print(f'DPC ResNet-34 model and Dataset: {args.dataset} chosen')
 
-    # See https://github.com/TengdaHan/DPC for pretrained model weights on Kinetics-400 with 3D ResNet-34 (runningStats)
+    # See https://github.com/TengdaHan/DPC#dpc-pretrained-weights for pretrained model weights on Kinetics-400 with 3D ResNet-34 (runningStats)
     checkpoint_path = "/path/to/k400_224_r34_dpc-rnn_runningStats.pth.tar"
     sample_size = 224
     num_seq = 5
