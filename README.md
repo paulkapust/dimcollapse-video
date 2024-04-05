@@ -4,15 +4,15 @@ This repository contains the code for the respective ICLR Tiny Paper 2024.
 
 ## Feature Extraction
 
-The supervised baseline follows a [Slow-only](https://pytorch.org/hub/facebookresearch_pytorchvideo_resnet/) 3D ResNet-50 model. For feature extraction, choose your dataset between Kinetics400, UCF101 or HMDB51 (path needs to be set in script).
+The supervised baseline follows a [Slow-only](https://pytorch.org/hub/facebookresearch_pytorchvideo_resnet/) 3D ResNet-50 model. For feature extraction, choose your dataset between Kinetics400, UCF101 or HMDB51.
 
 ```
-python supervised_baseline.py --dataset Kinetics400
+python supervised_baseline.py --dataset Kinetics400 --dataset_path /path/to/Kinetics400/videos/val/
 ```
 To inspect dimensional collapse for state-of-the-art self-supervised methods in video representation learning, we computed features of [pretrained](https://github.com/facebookresearch/SlowFast/tree/main/projects/contrastive_ssl) video-based models of SimCLR, MoCo, SwAV and BYOL. Follow the script below for more information. The [SlowFast](https://github.com/facebookresearch/SlowFast/tree/main) codebase is requiered to run the script.
 
 ```
-python video_ssl.py --method SimCLR --cfg /path/to/SimCLR_SlowR50_8x8.yaml --checkpoint /path/to/SimCLR_SlowR50_8x8_T2_epoch_00200.pyth --dataset Kinetics400
+python video_ssl.py --method SimCLR --checkpoint /path/to/SimCLR_SlowR50_8x8_T2_epoch_00200.pyth --checkpoint_cfg /path/to/SimCLR_SlowR50_8x8.yaml --dataset Kinetics400 --dataset_path /path/to/Kinetics400/videos/val/
 ```
 
 
