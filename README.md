@@ -2,6 +2,16 @@
 
 This repository contains the code for the respective ICLR Tiny Paper 2024.
 
+```
+@inproceedings{kapust2024exploring,
+  title={Exploring Dimensional Collapse in Self-Supervised Video Representation Learning},
+  author={Paul Kapust and Monika Kwiatkowski and Olaf Hellwich and Patrik Reiske},
+  booktitle={The Second Tiny Papers Track at ICLR 2024},
+  year={2024},
+  url={https://openreview.net/forum?id=iDeRIyYTop}
+}
+```
+
 ## Feature Extraction
 
 The supervised baseline follows a [Slow-only](https://pytorch.org/hub/facebookresearch_pytorchvideo_resnet/) 3D ResNet-50 model. For feature extraction, choose your dataset between Kinetics400, UCF101 or HMDB51.
@@ -18,7 +28,7 @@ python video_ssl.py --method SimCLR --checkpoint /path/to/SimCLR_SlowR50_8x8_T2_
 
 ## Visualization
 
-Make us of the following script to obtain Singular Value and Cumulative Explained Variance plots for the previously computed feature representations and/or embeddings.
+Make use of the following script to obtain Singular Value and Cumulative Explained Variance plots for the previously computed feature representations and/or embeddings.
 <p align="center">
   <img width="700" alt="spectrum" src="figures/video_simclr_moco_swav_k400.png">
 </p>
